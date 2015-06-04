@@ -17,9 +17,13 @@ sys.path.insert(0, directory)
 # ----------------------------------------
 
 
-session_factory = dbconnection.createConnection('mysql', 'jws.uwrl.usu.edu', 'odm2', 'ODM', 'ODM123!!')
-#session_factory = dbconnection.createConnection('postgresql', 'localhost', 'ODM2', 'odm', 'odm')
-#session_factory = dbconnection.createConnection('mysql', 'localhost', 'odm2', 'ODM', 'odm')
+#session_factory = dbconnection.createConnection('mysql', 'jws.uwrl.usu.edu', 'odm2', 'ODM', 'ODM123!!')
+
+
+session_factory = dbconnection.createConnection('postgresql', 'localhost', 'anotherODM2', 'odm', 'odm')
+#session_factory = dbconnection.createConnection('mysql', 'localhost', 'testodm2', 'Stephanie', 'odm')
+#session_factory = dbconnection.createConnection('mssql', 'localhost', 'anotherODM2', 'odm', 'odm')
+#session_factory = dbconnection.createConnection_string('sqlite:///D:/DEV/ODM2.sqlite')
 
 
 

@@ -10,12 +10,19 @@ from ODM1_1_1.models import Variable as Variable1
 
 class SessionFactory():
     def __init__(self, connection_string, echo):
-        self.engine = create_engine(connection_string, encoding='utf-8', echo=echo, pool_recycle=3600, pool_timeout=5, pool_size=20,
+        self.engine= None
+        self.psql_test_engine=None
+        self.ms_test_engine =None
+        if 'sqlite' in connection_string:
+            self.engine =  create_engine(connection_string)
+        else:
+            self.engine = create_engine(connection_string, encoding='utf-8', echo=echo, pool_recycle=3600, pool_timeout=5, pool_size=20,
                                     max_overflow=0)
-        self.psql_test_engine = create_engine(connection_string, encoding='utf-8', echo=echo, pool_recycle=3600, pool_timeout=5,
+            self.psql_test_engine = create_engine(connection_string, encoding='utf-8', echo=echo, pool_recycle=3600, pool_timeout=5,
                                     max_overflow=0,  connect_args={'connect_timeout': 1})
-        self.ms_test_engine = create_engine(connection_string, encoding='utf-8', echo=echo, pool_recycle=3600, pool_timeout=5,
+            self.ms_test_engine = create_engine(connection_string, encoding='utf-8', echo=echo, pool_recycle=3600, pool_timeout=5,
                                     max_overflow=0,  connect_args={'timeout': 1})
+
 
 
         # Create session maker
@@ -43,7 +50,18 @@ class dbconnection():
         connection_string= dbconnection.buildConnDict(dbconnection(), engine, address, db, user, password)
         #if self.testConnection(connection_string):
         if self.testEngine(connection_string):
+            #TODO testconnection
             #print "sucess"
+            return SessionFactory(connection_string, echo  = False)
+        else:
+            return None
+
+    @classmethod
+    def createConnection_string(cls, connection_string):
+        connection_string= connection_string
+        #if self.testEngine(connection_string):
+            #TODO testconnection
+        if True:
             return SessionFactory(connection_string, echo  = False)
         else:
             return None

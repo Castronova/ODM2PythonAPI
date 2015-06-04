@@ -1,7 +1,6 @@
-from src.api.ODM2.models import TimeSeriesResults,  TimeSeriesResultValues,  SpatialReferences,  DeploymentActions,  \
+from ..models import TimeSeriesResults,  TimeSeriesResultValues,  SpatialReferences,  DeploymentActions,  \
     Models,  RelatedModels,  Simulations,  Actions,  DatasetsResults,  ActionBy,  FeatureActions,  Results,  Variables,  \
-    Methods,  ProcessingLevels,  SamplingFeatures,  Units,  Organizations,  People,  Affiliations,  Datasets
-from src.api.ODM2.models import Sites
+    Methods,  ProcessingLevels,  SamplingFeatures,  Units,  Organizations,  People,  Affiliations,  Datasets, Sites
 #from src.api.ODM2.LikeODM1.model import Site
 
 __author__ = 'jmeline'
