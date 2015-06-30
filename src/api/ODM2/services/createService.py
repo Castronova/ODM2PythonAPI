@@ -1,4 +1,5 @@
-from api.ODM2.models import *
+# from api.ODM2.models import *
+from ..models import *
 #from src.api.ODM2.LikeODM1.model import Site
 
 __author__ = 'sreeder'
