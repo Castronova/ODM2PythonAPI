@@ -263,14 +263,14 @@ class CreateODM2( serviceBase):
         return a
 
     def createDataset(self, dstype, dscode, dstitle, dsabstract):
-        ds = Datasets()
+        ds = DataSets()
 
         # create the dataset
-        ds.DatasetTypeCV = dstype
-        ds.DatasetCode = dscode
-        ds.DatasetTitle = dstitle
-        ds.DatasetAbstract = dsabstract
-        ds.DatasetUUID = uuid.uuid4().hex
+        ds.DataSetTypeCV = dstype
+        ds.DataSetCode = dscode
+        ds.DataSetTitle = dstitle
+        ds.DataSetAbstract = dsabstract
+        ds.DataSetUUID = uuid.uuid4().hex
 
         self._session.add(ds)
         self._session.commit()
@@ -278,7 +278,7 @@ class CreateODM2( serviceBase):
         return ds
 
     def createDatasetResults(self, dsid, resultid):
-        dsr = DatasetsResults()
+        dsr = DataSetsResults()
 
         # link dataset to results
         dsr.DatasetID = dsid
