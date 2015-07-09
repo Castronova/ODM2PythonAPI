@@ -413,14 +413,14 @@ class ReadODM2( serviceBase   ):
 
     def getDatasets(self):
         try:
-            return self._session.query(Datasets).all()
+            return self._session.query(DataSets).all()
         except:
             return None
 
     def getDatasetByCode(self, dscode):
 
         try:
-            return self._session.query(Datasets).filer(Datasets.DatasetCode.ilike(dscode)).first()
+            return self._session.query(DataSets).filer(DataSets.DatasetCode.ilike(dscode)).first()
         except:
             return None
 
@@ -641,7 +641,7 @@ class ReadODM2( serviceBase   ):
         :return DeploymentAction Objects:
             :type list:
         """
-        return self._session.query(DeploymentAction).all()
+        return self._session.query(DeploymentActions).all()
 
         # return self._session.query)
 
@@ -654,7 +654,7 @@ class ReadODM2( serviceBase   ):
             :type DeploymentAction:
         """
         try:
-            return self._session.query(DeploymentAction).filter_by(DeploymentActionID=deploymentId).one()
+            return self._session.query(DeploymentActions).filter_by(DeploymentActionID=deploymentId).one()
         except:
             return None
 
@@ -667,7 +667,7 @@ class ReadODM2( serviceBase   ):
             :type DeploymentAction:
         """
         try:
-            return self._session.query(Deploymentaction).filter_by(DeploymentActionCode=deploymentCode).one()
+            return self._session.query(DeploymentActions).filter_by(DeploymentActionCode=deploymentCode).one()
         except:
             return None
 
@@ -680,58 +680,58 @@ class ReadODM2( serviceBase   ):
     def getAllModels(self):
 
         try:
-            return self._session.query(Model).all()
+            return self._session.query(Models).all()
         except:
             return None
 
     def getModelByCode(self, modelcode):
         try:
-            return self._session.query(Model).filter(Model.ModelCode.ilike(modelcode)).first()
+            return self._session.query(Models).filter(Models.ModelCode.ilike(modelcode)).first()
         except:
             return None
 
     def getAllSimulations(self):
 
         try:
-            return self._session.query(Simulation).all()
+            return self._session.query(Simulations).all()
         except:
             return None
 
     def getSimulationByName(self, simulationName):
         try:
-            return self._session.query(Simulation).filter(Simulation.SimulationName.ilike(simulationName)).first()
+            return self._session.query(Simulations).filter(Simulations.SimulationName.ilike(simulationName)).first()
         except:
             return None
 
     def getSimulationByActionID(self, actionID):
         try:
-            return self._session.query(Simulation).filter_by(ActionID=actionID).first()
+            return self._session.query(Simulations).filter_by(ActionID=actionID).first()
         except:
             return None
 
     def getRelatedModelsByID(self, modelid):
         try:
-            return self._session.query(Relatedmodel).filter_by(RelatedModelID=modelid).all()
+            return self._session.query(RelatedModels).filter_by(RelatedModelID=modelid).all()
         except:
             return None
 
     def getRelatedModelsByCode(self, modelcode):
         try:
-            return self._session.query(Relatedmodel).join(Relatedmodel.ModelID == Model.ModelID) \
-                .filter(Model.ModelCode == modelcode)
+            return self._session.query(RelatedModels).join(RelatedModels.ModelID == Models.ModelID) \
+                .filter(Models.ModelCode == modelcode)
         except:
             return None
 
     def getResultsBySimulationID(self, simulationID):
         try:
-            return self._session.query(Result).filter(Simulation.SimulationID == simulationID).all()
+            return self._session.query(Results).filter(Simulations.SimulationID == simulationID).all()
         except:
             return None
 
 # ################################################################################
 # ODM2
 # ################################################################################
-
-class readODM2(object):
-   def test(self):
-        return None
+#
+# class readODM2(object):
+#    def test(self):
+#         return None
