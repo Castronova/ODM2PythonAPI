@@ -47,7 +47,7 @@ def compiles_as_bound(cls):
     @compiles(cls, 'sqlite')
     def compile_function(element, compiler, **kw):
         print  "sqlite Alter Table %s Alter column %s"% (dir(element), dir(compiler))
-        return "ST_AsText(samplingfeatures.featuregeometry"
+        return "ST_AsText(samplingfeatures.featuregeometry)"
         #return "samplingfeatures.featuregeometry"
         #return None
 
