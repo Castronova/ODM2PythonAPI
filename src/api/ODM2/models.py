@@ -1,6 +1,5 @@
-from sqlalchemy import BigInteger, Column, Date, DateTime, Float, ForeignKey, Integer, String, Boolean, func, Table
+from sqlalchemy import BigInteger, Column, Date, DateTime, Float, ForeignKey, Integer, String, Boolean, Table
 from sqlalchemy.orm import relationship
-import sqlalchemy.orm as orm
 
 
 # Should not be importing anything from a specific dialect
@@ -17,7 +16,7 @@ metadata = Base.metadata
 
 #from base import modelBase as Base
 
-from base import modelBase
+from src.api.base import modelBase
 Base = modelBase.Base
 
 
@@ -164,6 +163,17 @@ class CVEquipmentType(Base):
     def __repr__(self):
         return "<CV('%s', '%s', '%s', '%s')>" % (self.Term, self.Name, self.Definition, self.Category)
 
+class CVMediumType(Base):
+    __tablename__ = 'cv_medium'
+    __table_args__ = {u'schema': 'odm2'}
+
+    Term = Column('term', String(255), nullable=False)
+    Name = Column('name', String(255), primary_key=True)
+    Definition = Column('definition', String(1000))
+    Category = Column('category', String(255))
+    SourceVocabularyUri = Column('sourcevocabularyuri', String(255))
+    def __repr__(self):
+        return "<CVMedium('%s', '%s', '%s', '%s')>" %(self.Term, self.name, self.Definition, self.Category)
 
 class CVMethodType(Base):
     __tablename__ = 'cv_methodtype'
@@ -249,19 +259,6 @@ class CVRelationshipType(Base):
         return "<CV('%s', '%s', '%s', '%s')>" % (self.Term, self.Name, self.Definition, self.Category)
 
 
-class CVSampledMedium(Base):
-    __tablename__ = 'cv_sampledmedium'
-    __table_args__ = {u'schema': 'odm2'}  # __table_args__ = {u'schema': Schema.getSchema()}
-
-    Term = Column('term', String(255), nullable=False)
-    Name = Column('name', String(255), primary_key=True)
-    Definition = Column('definition', String(1000))
-    Category = Column('category', String(255))
-    SourceVocabularyURI = Column('sourcevocabularyuri', String(255))
-
-    def __repr__(self):
-        return "<CV('%s', '%s', '%s', '%s')>" % (self.Term, self.Name, self.Definition, self.Category)
-
 
 class CVSamplingFeatureGeoType(Base):
     __tablename__ = 'cv_samplingfeaturegeotype'
@@ -319,20 +316,6 @@ class CVSpeciation(Base):
         return "<CV('%s', '%s', '%s', '%s')>" % (self.Term, self.Name, self.Definition, self.Category)
 
 
-class CVSpecimenMedium(Base):
-    __tablename__ = 'cv_specimenmedium'
-    __table_args__ = {u'schema': 'odm2'}  # __table_args__ = {u'schema': Schema.getSchema()}
-
-    Term = Column('term', String(255), nullable=False)
-    Name = Column('name', String(255), primary_key=True)
-    Definition = Column('definition', String(1000))
-    Category = Column('category', String(255))
-    SourceVocabularyURI = Column('sourcevocabularyuri', String(255))
-
-    def __repr__(self):
-        return "<CV('%s', '%s', '%s', '%s')>" % (self.Term, self.Name, self.Definition, self.Category)
-
-
 class CVSpecimenType(Base):
     __tablename__ = 'cv_specimentype'
     __table_args__ = {u'schema': 'odm2'}  # __table_args__ = {u'schema': Schema.getSchema()}
@@ -349,20 +332,6 @@ class CVSpecimenType(Base):
 
 class CVSiteType(Base):
     __tablename__ = 'cv_sitetype'
-    __table_args__ = {u'schema': 'odm2'}  # __table_args__ = {u'schema': Schema.getSchema()}
-
-    Term = Column('term', String(255), nullable=False)
-    Name = Column('name', String(255), primary_key=True)
-    Definition = Column('definition', String(1000))
-    Category = Column('category', String(255))
-    SourceVocabularyURI = Column('sourcevocabularyuri', String(255))
-
-    def __repr__(self):
-        return "<CV('%s', '%s', '%s', '%s')>" % (self.Term, self.Name, self.Definition, self.Category)
-
-
-class CVReferenceMaterialMedium(Base):
-    __tablename__ = 'cv_referencematerialmedium'
     __table_args__ = {u'schema': 'odm2'}  # __table_args__ = {u'schema': Schema.getSchema()}
 
     Term = Column('term', String(255), nullable=False)
@@ -563,7 +532,7 @@ class SamplingFeatures(Base):
     __table_args__ = {u'schema': 'odm2'}  # __table_args__ = {u'schema': Schema.getSchema()}
 
     SamplingFeatureID = Column('samplingfeatureid', Integer, primary_key=True, nullable=False)
-    #SamplingFeatureUUID = Column('samplingfeatureuuid', String(36), nullable=False)
+    SamplingFeatureUUID = Column('samplingfeatureuuid', String(36), nullable=False)
     SamplingFeatureTypeCV = Column('samplingfeaturetypecv', ForeignKey(CVSamplingFeatureType.Name),
                                    nullable=False, index=True)
     SamplingFeatureCode = Column('samplingfeaturecode', String(50), nullable=False)
@@ -732,7 +701,7 @@ class Results(Base):
     ValidDateTime = Column('validdatetime', DateTime)
     ValidDateTimeUTCOffset = Column('validdatetimeutcoffset', BigInteger)
     StatusCV = Column('statuscv', ForeignKey(CVStatus.Name), index=True)
-    SampledMediumCV = Column('sampledmediumcv', ForeignKey(CVSampledMedium.Name), nullable=False, index=True)
+    SampledMediumCV = Column('sampledmediumcv', ForeignKey(CVMediumType.Name), nullable=False, index=True)
     ValueCount = Column('valuecount', Integer, nullable=False)
 
     # IntendedObservationSpacing = Column(String(255))
@@ -801,7 +770,6 @@ class EquipmentActions(Base):
     BridgeID = Column('bridgeid', Integer, primary_key=True, nullable=False)
     EquipmentID = Column('equipmentid', ForeignKey(Equipment.EquipmentID), nullable=False)
     ActionID = Column('actionid', ForeignKey(Actions.ActionID), nullable=False)
-
     ActionObj = relationship(Actions)
     EquipmentObj = relationship(Equipment)
 
@@ -873,7 +841,7 @@ class Specimens(Base):
     SamplingFeatureID = Column('samplingfeatureid', ForeignKey(SamplingFeatures.SamplingFeatureID),
                                primary_key=True)
     SpecimenTypeCV = Column('specimentypecv', ForeignKey(CVSpecimenType.Name), nullable=False, index=True)
-    SpecimenMediumCV = Column('specimenmediumcv', ForeignKey(CVSpecimenMedium.Name), nullable=False, index=True)
+    SpecimenMediumCV = Column('specimenmediumcv', ForeignKey(CVMediumType.Name), nullable=False, index=True)
     IsFieldSpecimen = Column('isfieldspecimen', Boolean, nullable=False)
 
     SamplingFeatureObj = relationship(SamplingFeatures)
@@ -886,12 +854,16 @@ class SpatialOffsets(Base):
     SpatialOffsetID = Column('spatialoffsetid', Integer, primary_key=True, nullable=False)
     SpatialOffsetTypeCV = Column('spatialoffsettypecv', ForeignKey(CVSpatialOffsetType.Name), nullable=False,
                                  index=True)
-    Offset1Value = Column('offset1value', Float(53), nullable=False)
-    Offset1UnitID = Column('offset1unitid', Integer, nullable=False)
+    Offset1Value = Column('offset1value', Float(53),  nullable=False)
+    Offset1UnitID = Column('offset1unitid', Integer, ForeignKey(Units.UnitsID), nullable=False)
     Offset2Value = Column('offset2value', Float(53))
-    Offset2UnitID = Column('offset2unitid', Integer)
+    Offset2UnitID = Column('offset2unitid', Integer, ForeignKey(Units.UnitsID))
     Offset3Value = Column('offset3value', Float(53))
-    Offset3UnitID = Column('offset3unitid', Integer)
+    Offset3UnitID = Column('offset3unitid', Integer, ForeignKey(Units.UnitsID))
+
+    Offset1UnitObj = relationship(Units, primaryjoin='SpatialOffsets.Offset1UnitID == Units.UnitsID')
+    Offset2UnitObj = relationship(Units, primaryjoin='SpatialOffsets.Offset2UnitID == Units.UnitsID')
+    Offset3UnitObj = relationship(Units, primaryjoin='SpatialOffsets.Offset3UnitID == Units.UnitsID')
 
 
 class Sites(Base):
@@ -1831,10 +1803,15 @@ class MeasurementResults(Base):
 
     SpatialReferenceObj = relationship(SpatialReferences)
     TimeUnitObj = relationship(Units, primaryjoin='MeasurementResults.TimeAggregationIntervalUnitsID == Units.UnitsID')
-    XUnitObjObj = relationship(Units, primaryjoin='MeasurementResults.XLocationUnitsID == Units.UnitsID')
-    YUnitObj = relationship(Units, primaryjoin='MeasurementResults.YLocationUnitsID == Units.UnitsID')
-    ZUnitObj = relationship(Units, primaryjoin='MeasurementResults.ZLocationUnitsID == Units.UnitsID')
+    XLocationUnitsObj = relationship(Units, primaryjoin='MeasurementResults.XLocationUnitsID == Units.UnitsID')
+    YLocationUnitsObj = relationship(Units, primaryjoin='MeasurementResults.YLocationUnitsID == Units.UnitsID')
+    ZLocationUnitsObj = relationship(Units, primaryjoin='MeasurementResults.ZLocationUnitsID == Units.UnitsID')
     ResultObj = relationship(Results, primaryjoin='MeasurementResults.ResultID == Results.ResultID')
+    def __repr__(self):
+        return "<MeasResults('%s', '%s', '%s', '%s', '%s', '%s', '%s',  '%s')>" % \
+               (self.ResultID, self.XLocation, self.YLocation, self.XLocation,
+                self.ResultObj, self.XLocationUnitsObj, self.SpatialReferenceObj,
+                 self.AggregationStatisticCV)
 
 
 class CategoricalResultValues(Base):
@@ -1861,6 +1838,11 @@ class MeasurementResultValues(Base):
     ValueDateTimeUTCOffset = Column('valuedatetimeutcoffset', Integer, nullable=False)
 
     MeasurementResultObj = relationship(MeasurementResults)
+
+    def __repr__(self):
+        return "<MeasValues('%s', '%s', '%s')>" % (self.DataValue, self.ValueDateTime, self.ResultID)
+
+
 
 
 class PointCoverageResultValues(Base):
@@ -1987,7 +1969,7 @@ class TimeSeriesResultValues(Base):
                 self.TimeAggregationIntervalUnitsID]
 
     def __repr__(self):
-        return "<DataValue('%s', '%s', '%s')>" % (self.DataValue, self.ValueDateTime, self.TimeAggregationInterval)
+        return "<TimeSeriesResultValues('%s', '%s', '%s')>" % (self.DataValue, self.ValueDateTime, self.TimeAggregationInterval)
 
 
 class TrajectoryResultValues(Base):

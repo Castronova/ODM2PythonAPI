@@ -1,8 +1,16 @@
 from sqlalchemy.exc import SQLAlchemyError, DBAPIError
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from .ODM2.models import Variables as Variable2, change_schema
 from .ODM1_1_1.models import Variable as Variable1
+
+
+import os, sys
+this_file = os.path.realpath(__file__)
+directory = os.path.dirname(this_file)
+sys.path.insert(0, directory)
+
+from .ODM2.models import Variables as Variable2, change_schema
+from .versionSwitcher import ODM, refreshDB #import Variable as Variable1
 
 
 class SessionFactory():
@@ -11,24 +19,16 @@ class SessionFactory():
             self.engine = create_engine(connection_string, encoding='utf-8', echo=echo)
             self.test_engine = self.engine
         if 'mssql' in connection_string:
-              self.engine = create_engine(connection_string, encoding='utf-8', echo=echo, pool_recycle=3600, pool_timeout=5,
-                                    pool_size=20, max_overflow=0)
-              self.test_engine = create_engine(connection_string, encoding='utf-8', echo=echo, pool_recycle=3600,
-                                    pool_timeout=5, max_overflow=0, connect_args={'timeout': 1})
-
+              self.engine = create_engine(connection_string, encoding='utf-8', echo=echo, pool_recycle=3600, pool_timeout=5, pool_size=20, max_overflow=0)
+              self.test_engine = create_engine(connection_string, encoding='utf-8', echo=echo, pool_recycle=3600, pool_timeout=5, max_overflow=0, connect_args={'timeout': 1})
         elif 'postgresql' in connection_string or 'mysql' in connection_string:
-            self.engine = create_engine(connection_string, encoding='utf-8', echo=echo, pool_recycle=3600, pool_timeout=5,
-                                        pool_size=20,
-                                        max_overflow=0)
-            self.test_engine = create_engine(connection_string, encoding='utf-8', echo=echo, pool_recycle=3600,
-                                              pool_timeout=5,
-                                              max_overflow=0, connect_args={'connect_timeout': 1})
-
+            self.engine = create_engine(connection_string, encoding='utf-8', echo=echo, pool_recycle=3600, pool_timeout=5, pool_size=20, max_overflow=0)
+            self.test_engine = create_engine(connection_string, encoding='utf-8', echo=echo, pool_recycle=3600, pool_timeout=5, max_overflow=0, connect_args={'connect_timeout': 1})
 
         # Create session maker
-
         self.Session = sessionmaker(bind=self.engine)
         self.test_Session = sessionmaker(bind=self.test_engine)
+
 
 
     def getSession(self):
@@ -46,17 +46,27 @@ class dbconnection():
         self._connection_format = "%s+%s://%s:%s@%s/%s"
 
     @classmethod
-    def createConnection(self, engine, address, db=None, user=None, password=None):
+
+    def createConnection(self, engine, address, db=None, user=None, password=None, dbtype = 2.0):
         if engine == 'sqlite':
             connection_string = engine +':///'+address
         else:
             connection_string = dbconnection.buildConnDict(dbconnection(), engine, address, db, user, password)
         # if self.testConnection(connection_string):
-        if self.testEngine(connection_string):
-            # print "sucess"
-            return SessionFactory(connection_string, echo=False)
+        refreshDB(dbtype)
+
+        if dbtype == 2.0:
+            if self.testEngine(connection_string):
+                # print "sucess"
+                return SessionFactory(connection_string, echo=False)
+            else:
+                return None
         else:
-            return None
+            if self.testEngine1_1(connection_string):
+                # print "sucess"
+                return SessionFactory(connection_string, echo=False)
+            else:
+                return None
 
     @staticmethod
     def _getSchema(engine):
@@ -75,11 +85,11 @@ class dbconnection():
 
         s = self._getSchema(engine)
 
-        print "orig", Variable2.__table__.schema
-        print "New", s
+        # print "orig", Variable2.__table__.schema
+        # print "New", s
         change_schema(s)
 
-        print "set new", Variable2.__table__.schema
+        # print "set new", Variable2.__table__.schema
 
     @classmethod
     def testEngine(self, connection_string):
@@ -93,11 +103,13 @@ class dbconnection():
             return False
         return True
 
+    @classmethod
     def testEngine1_1(self, connection_string):
         s = SessionFactory(connection_string, echo=False)
         try:
             # s.ms_test_Session().query(Variable1).limit(1).first()
-            s.test_Session.execute(Variable1).limit(1).first()
+            s.test_Session().query(ODM.Variable.code).limit(1).first()
+
             '''
             if 'mssql' in connection_string:
                 s.ms_test_Session().execute(Variable1).limit(1).first()
