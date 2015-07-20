@@ -1,17 +1,13 @@
 from sqlalchemy.exc import SQLAlchemyError, DBAPIError
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from .ODM1_1_1.models import Variable as Variable1
 
-
-<<<<<<< HEAD
 import os, sys
 this_file = os.path.realpath(__file__)
 directory = os.path.dirname(this_file)
 sys.path.insert(0, directory)
 
-=======
->>>>>>> 3b2f1e85ba1642e5725d72d88d3e7e5e97cb9121
+from .ODM1_1_1.models import Variable as Variable1
 from .ODM2.models import Variables as Variable2, change_schema
 from .versionSwitcher import ODM, refreshDB #import Variable as Variable1
 

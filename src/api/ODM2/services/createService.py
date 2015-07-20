@@ -1,15 +1,6 @@
-<<<<<<< HEAD
-
-# from api.ODM2.models import *
-from ...ODM2.models import *
-
-=======
-from src.api.ODM2.models import *
->>>>>>> 3b2f1e85ba1642e5725d72d88d3e7e5e97cb9121
-#from src.api.ODM2.LikeODM1.model import Site
-
 __author__ = 'sreeder'
 
+from ...ODM2.models import *
 from .. import serviceBase
 import datetime as dt
 import uuid

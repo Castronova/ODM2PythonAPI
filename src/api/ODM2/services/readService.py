@@ -1,14 +1,10 @@
+__author__ = 'jmeline'
+
 from sqlalchemy import func
 import pandas as pd
-<<<<<<< HEAD
 from ...ODM2.models import *
-=======
-
-from src.api.ODM2.models import *
->>>>>>> 3b2f1e85ba1642e5725d72d88d3e7e5e97cb9121
 from .. import serviceBase
 
-__author__ = 'jmeline'
 
 class ReadODM2( serviceBase   ):
     '''
@@ -429,11 +425,7 @@ class ReadODM2( serviceBase   ):
     def getDatasetByCode(self, dscode):
 
         try:
-<<<<<<< HEAD
             return self._session.query(DataSets).filer(DataSets.DatasetCode.ilike(dscode)).first()
-=======
-            return self._session.query(DataSets).filer(DataSets.DataSetCode.ilike(dscode)).first()
->>>>>>> 3b2f1e85ba1642e5725d72d88d3e7e5e97cb9121
         except:
             return None
 

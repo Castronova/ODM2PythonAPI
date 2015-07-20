@@ -1,11 +1,7 @@
-from .. import serviceBase
-<<<<<<< HEAD
-from ...ODM2.models import *
-
-=======
-from src.api.ODM2.models import *
->>>>>>> 3b2f1e85ba1642e5725d72d88d3e7e5e97cb9121
 __author__ = 'jmeline'
+
+from .. import serviceBase
+from ...ODM2.models import *
 
 # ################################################################################
 # Annotations
