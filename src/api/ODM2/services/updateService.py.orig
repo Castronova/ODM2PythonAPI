@@ -1,20 +1,21 @@
 from .. import serviceBase
 <<<<<<< HEAD
 from ...ODM2.models import *
-
 =======
 from src.api.ODM2.models import *
->>>>>>> 3b2f1e85ba1642e5725d72d88d3e7e5e97cb9121
-__author__ = 'jmeline'
 
+from datetime import datetime
+>>>>>>> Added capability to perform duplicate value checks
+
+__author__ = 'jmeline'
 # ################################################################################
 # Annotations
 # ################################################################################
 
-class DeleteODM2(serviceBase):
-
+class UpdateODM2(serviceBase):
     def test(self):
         return None
+
 
 # ################################################################################
 # CV
@@ -23,12 +24,12 @@ class DeleteODM2(serviceBase):
 
 
 
-
 # ################################################################################
 # Core
 # ################################################################################
-
-
+    def updateResultValidDateTime(self, resultId, dateTime):
+        q = self._session.query(Results).filter(Results.ResultID==int(resultId)).update({'ValidDateTime':dateTime.to_datetime()})
+        self._session.commit()
 
 
 # ################################################################################
@@ -37,9 +38,11 @@ class DeleteODM2(serviceBase):
 
 
 
+
 # ################################################################################
 # Equipment
 # ################################################################################
+
 
 
 
@@ -73,7 +76,7 @@ class DeleteODM2(serviceBase):
 
 
 # ################################################################################
-# Annotations
+# Results
 # ################################################################################
 
 
@@ -89,7 +92,6 @@ class DeleteODM2(serviceBase):
 # ################################################################################
 # Sensors
 # ################################################################################
-
 
 
 

@@ -1,11 +1,8 @@
 <<<<<<< HEAD
-
-# from api.ODM2.models import *
 from ...ODM2.models import *
-
 =======
 from src.api.ODM2.models import *
->>>>>>> 3b2f1e85ba1642e5725d72d88d3e7e5e97cb9121
+>>>>>>> Added capability to perform duplicate value checks
 #from src.api.ODM2.LikeODM1.model import Site
 
 __author__ = 'sreeder'
@@ -269,14 +266,14 @@ class CreateODM2( serviceBase):
         return a
 
     def createDataset(self, dstype, dscode, dstitle, dsabstract):
-        ds = DataSets()
+        ds = Datasets()
 
         # create the dataset
-        ds.DataSetTypeCV = dstype
-        ds.DataSetCode = dscode
-        ds.DataSetTitle = dstitle
-        ds.DataSetAbstract = dsabstract
-        ds.DataSetUUID = uuid.uuid4().hex
+        ds.DatasetTypeCV = dstype
+        ds.DatasetCode = dscode
+        ds.DatasetTitle = dstitle
+        ds.DatasetAbstract = dsabstract
+        ds.DatasetUUID = uuid.uuid4().hex
 
         self._session.add(ds)
         self._session.commit()
@@ -284,7 +281,7 @@ class CreateODM2( serviceBase):
         return ds
 
     def createDatasetResults(self, dsid, resultid):
-        dsr = DataSetsResults()
+        dsr = DatasetsResults()
 
         # link dataset to results
         dsr.DatasetID = dsid

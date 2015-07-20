@@ -1,10 +1,9 @@
 from .. import serviceBase
 <<<<<<< HEAD
 from ...ODM2.models import *
-
 =======
 from src.api.ODM2.models import *
->>>>>>> 3b2f1e85ba1642e5725d72d88d3e7e5e97cb9121
+>>>>>>> Added capability to perform duplicate value checks
 __author__ = 'jmeline'
 
 # ################################################################################
