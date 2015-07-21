@@ -1005,7 +1005,6 @@ class Simulations(Base):
     TimeStepValue = Column('timestepvalue', Float(53), nullable=False)
     TimeStepUnitsID = Column('timestepunitsid', ForeignKey(Units.UnitsID), nullable=False)
     InputDataSetID = Column('inputdatasetid', ForeignKey(DataSets.DataSetID))
-    OutputDataSetID = Column('outputdatasetid', Integer)
     ModelID = Column('modelid', ForeignKey(Models.ModelID), nullable=False)
 
     Action = relationship(Actions)
@@ -1708,7 +1707,8 @@ class TimeSeriesResults(Base):
     __tablename__ = u'timeseriesresults'
     __table_args__ = {u'schema': 'odm2'}  # __table_args__ = {u'schema': Schema.getSchema()}
 
-    ResultID = Column('resultid', ForeignKey(Results.ResultID), primary_key=True)
+    ResultID = Column('resultid', ForeignKey(Results.ResultID), primary_key=True, nullable=False)
+    # ResultID = Column('resultid', Integer, primary_key=True, nullable=False)
     XLocation = Column('xlocation', Float(53))
     XLocationUnitsID = Column('xlocationunitsid', ForeignKey(Units.UnitsID))
     YLocation = Column('ylocation', Float(53))
@@ -1721,7 +1721,7 @@ class TimeSeriesResults(Base):
     AggregationStatisticCV = Column('aggregationstatisticcv', ForeignKey(CVAggregationStatistic.Name),
                                     nullable=False, index=True)
 
-    ResultObj = relationship(Results)
+    # ResultObj = relationship(Results)
     IntendedTimeSpacingUnitsObj = relationship(Units,
                                                primaryjoin='TimeSeriesResults.IntendedTimeSpacingUnitsID == Units.UnitsID')
     SpatialReferenceObj = relationship(SpatialReferences)
@@ -1733,7 +1733,8 @@ class TimeSeriesResults(Base):
     def __repr__(self):
         return "<TimeSeriesResults('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')>" % \
                (self.ResultID, self.XLocation, self.YLocation, self.XLocation,
-                self.ResultObj, self.XLocationUnitsObj, self.SpatialReferenceObj,
+                # self.ResultObj, self.XLocationUnitsObj, self.SpatialReferenceObj,
+                '0','0','0',
                 self.IntendedTimeSpacing, self.AggregationStatisticCV)
 
 

@@ -463,7 +463,7 @@ class CreateODM2( serviceBase):
 
     def createTimeSeriesResultValues(self, datavalues):
         try:
-            datavalues.to_sql(name="timeseriesresultvalues", if_exists='append', con=self._session_factory.engine, index=False)
+            datavalues.to_sql(name="TimeSeriesResultValues", if_exists='append', con=self._session_factory.engine, index=False)
             self._session.commit()
             return datavalues
         except Exception, e:
@@ -578,7 +578,7 @@ class CreateODM2( serviceBase):
     def createSimulation(self, actionid, modelID, simulationName, simulationDescription, simulationStartDateTime,
                          simulationStartOffset,
                          simulationEndDateTime, simulationEndOffset, timeStepValue, timeStepUnitID,
-                         inputDatasetID=None):
+                         inputDatasetID=None,outputDatasetID=None):
         sim = Simulations()
         sim.ActionID = actionid
         sim.ModelID = modelID
