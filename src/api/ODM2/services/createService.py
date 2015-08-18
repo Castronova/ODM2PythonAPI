@@ -255,8 +255,6 @@ class CreateODM2( serviceBase):
         self._session.flush()
         # self._session.refresh(a)
 
-        print a.OrganizationID
-
         return a
 
     def createDataset(self, dstype, dscode, dstitle, dsabstract):
