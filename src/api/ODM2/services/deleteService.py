@@ -36,9 +36,16 @@ class DeleteODM2(serviceBase):
 
     def deleteModelByID(self, id):
         try:
-            # self._session.query(models.Models).delete()
             self._session.query(models.Models).filter_by(ModelID=id).delete()
             self._session.commit()
+        except:
+            return None
+
+    def deleteModelByName(self, name):
+        try:
+            self._session.query(models.Models).filter_by(ModelName=name).delete()
+            self._session.commit()
+            pass
         except:
             return None
 
@@ -69,8 +76,17 @@ class DeleteODM2(serviceBase):
         except:
             return None
 
-
-
+    def isModelConstraint(self, id):
+        #  This methods returns True if a model is associated with a simulation.
+        try:
+            num = self._session.query(models.Simulations.SimulationName).filter(models.Simulations.ModelID == id).all()
+            if len(num) < 1:
+                return False
+            else:
+                return True
+            pass
+        except:
+            return None
 
 
 
