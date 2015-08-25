@@ -8,10 +8,16 @@ from ODM2PythonAPI.src.api.ODM2 import models
 # Annotations
 # ################################################################################
 
+def convertTupleToInt(tup):
+    #  Gets the first integer inside tuple in a list
+    return list(tup[0])[0]
+
 class DeleteODM2(serviceBase):
 
     def test(self):
         return None
+
+    '''Please keep these methods in alphabetical order'''
 
     def deleteActionBy_ByID(self, id):
         try:
@@ -30,6 +36,20 @@ class DeleteODM2(serviceBase):
     def deleteAffiliationByID(self, id):
         try:
             self._session.query(models.Affiliations).filter_by(AffiliationID=id).delete()
+            self._session.commit()
+        except:
+            return None
+
+    def deleteDatasetsByID(self, id):
+        try:
+            self._session.query(models.DataSets).filter_by(DatasetID=id).delete()
+            self._session.commit()
+        except:
+            return None
+
+    def deleteFeatureActionByID(self, id):
+        try:
+            self._session.query(models.FeatureActions).filter_by(ActionID=id).delete()
             self._session.commit()
         except:
             return None
@@ -62,9 +82,40 @@ class DeleteODM2(serviceBase):
         except:
             return None
 
+    def deleteRecord(self, id):
+        try:
+            #  Simulation id an action id will not always be the same.
+            #  So the action id id being used to delete the record
+            id = self._session.query(models.Simulations.ActionID).filter_by(ActionID=id).all()
+            id = convertTupleToInt(id)
+            self.deleteSimulationByID(id)
+            self.deleteActionByID(id)
+            self.deleteActionBy_ByID(id)
+            self.deleteResultByID(id)
+            self.deleteFeatureActionByID(id)
+            self.deleteTimeeSeriesResultByID(id)
+            self.deleteDatasetsByID(id)
+            pass
+        except:
+            return None
+
+    def deleteResultByID(self, id):
+        try:
+            self._session.query(models.Results).filter_by(ResultID=id).delete()
+            self._session.commit()
+        except:
+            return None
+
     def deleteSimulationByID(self, id):
         try:
             self._session.query(models.Simulations).filter_by(SimulationID=id).delete()
+            self._session.commit()
+        except:
+            return None
+
+    def deleteTimeeSeriesResultByID(self, id):
+        try:
+            self._session.query(models.TimeSeriesResults).filter_by(ResultID=id).delete()
             self._session.commit()
         except:
             return None
@@ -87,6 +138,7 @@ class DeleteODM2(serviceBase):
             pass
         except:
             return None
+
 
 
 
