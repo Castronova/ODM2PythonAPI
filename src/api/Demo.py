@@ -129,7 +129,7 @@ except Exception as e:
 # Get the values for a particular TimeSeriesResult
 print "\n-------- Example of Retrieving Time Series Result Values ---------"
 
-tsValues = read.getTimeSeriesResultValuesByResultId(tsResult.ResultID)  # Return type is a pandas dataframe
+tsValues = read.getDateTime_From_Time_Series_Result_Values(tsResult.ResultID)  # Return type is a pandas dataframe
 
 # Print a few Time Series Values to the console
 # tsValues.set_index('ValueDateTime', inplace=True)

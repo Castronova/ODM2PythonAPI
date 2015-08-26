@@ -542,7 +542,7 @@ class ReadODM2( serviceBase   ):
         return df
         # return self._session.query(Timeseriesresultvalue).all()
 
-    def getTimeSeriesResultValuesByResultId(self, resultId):
+    def getDateTime_From_Time_Series_Result_Values(self, id):
         """Select by resultId
 
         :param timeSeriesId:
@@ -560,7 +560,14 @@ class ReadODM2( serviceBase   ):
         # except Exception as e:
         #     return None
         try:
-            return self._session.query(models.TimeSeriesResultValues).filter_by(ResultID=resultId).all()
+            # return self._session.query(models.TimeSeriesResultValues).filter_by(ResultID=resultId).all()
+            return self._session.execute("SELECT datetime(ValueDateTime) From timeseriesresultvalues WHERE ResultID=%d;" % id).fetchall()
+        except:
+            return None
+
+    def getFromTimeSeriesResultValues(self, id):
+        try:
+            return self._session.query(models.TimeSeriesResultValues).filter_by(ResultID=id).all()
         except:
             return None
 
