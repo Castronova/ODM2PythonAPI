@@ -4,6 +4,7 @@ from sqlalchemy import func
 import pandas as pd
 from ...ODM2.models import *
 from .. import serviceBase
+from ODM2PythonAPI.src.api.ODM2 import models
 
 
 class ReadODM2( serviceBase   ):
@@ -549,14 +550,18 @@ class ReadODM2( serviceBase   ):
         :return return matching Timeseriesresultvalue Object filtered by resultId:
             :type Timeseriesresultvalue:
         """
+        # try:
+        #     q = self._session.query(TimeSeriesResults).filter_by(ResultID=resultId).all()
+        #
+        #     df = pd.DataFrame([dv.list_repr() for dv in q])
+        #     df.columns = q[0].get_columns()
+        #     return df
+        #     # return self._session.query(Timeseriesresultvalue).filter_by(ResultID=resultId).all()
+        # except Exception as e:
+        #     return None
         try:
-            q = self._session.query(TimeSeriesResults).filter_by(ResultID=resultId).all()
-
-            df = pd.DataFrame([dv.list_repr() for dv in q])
-            df.columns = q[0].get_columns()
-            return df
-            # return self._session.query(Timeseriesresultvalue).filter_by(ResultID=resultId).all()
-        except Exception as e:
+            return self._session.query(models.TimeSeriesResultValues).filter_by(ResultID=resultId).all()
+        except:
             return None
 
     def getTimeSeriesResultValuesByCode(self, timeSeriesCode):
