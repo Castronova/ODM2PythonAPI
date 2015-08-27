@@ -565,7 +565,7 @@ class ReadODM2( serviceBase   ):
         except:
             return None
 
-    def getFromTimeSeriesResultValues(self, id):
+    def getTimeSeriesResultValuesByResultID(self, id):
         try:
             return self._session.query(models.TimeSeriesResultValues).filter_by(ResultID=id).all()
         except:

@@ -710,7 +710,7 @@ class Results(Base):
     ProcessingLevelObj = relationship(ProcessingLevels)
 
     TaxonomicClassifierObj = relationship(TaxonomicClassifiers)
-    UnitsObj = relationship(Units)
+    UnitObj = relationship(Units)
     VariableObj = relationship(Variables)
 
     def __repr__(self):
