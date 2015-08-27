@@ -740,8 +740,15 @@ class ReadODM2( serviceBase   ):
             return None
 
     def getResultsBySimulationID(self, simulationID):
+        #  is this correct? because the result table has no simulationId column
         try:
             return self._session.query(Results).filter(Simulations.SimulationID == simulationID).all()
+        except:
+            return None
+
+    def getResultByResultID(self, id):
+        try:
+            return self._session.query(models.Results).filter_by(ResultID=id).all()
         except:
             return None
 
