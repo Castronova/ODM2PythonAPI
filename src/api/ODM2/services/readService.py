@@ -430,7 +430,10 @@ class ReadODM2( serviceBase   ):
         """
 
         try:
-            return self._session.query(Affiliations).filter(Organizations.OrganizationCode.ilike(orgcode)) \
+            return self._session.query(Affiliations)\
+                .filter(Affiliations.PersonID == People.PersonID) \
+                .filter(Affiliations.OrganizationID == Organizations.OrganizationID) \
+                .filter(Organizations.OrganizationCode.ilike(orgcode)) \
                 .filter(People.PersonFirstName.ilike(personfirst)) \
                 .filter(People.PersonLastName.ilike(personlast)).first()
         except:
@@ -445,7 +448,8 @@ class ReadODM2( serviceBase   ):
         """
 
         try:
-            return self._session.query(Affiliations).filter(People.PersonFirstName.ilike(personfirst)) \
+            return self._session.query(Affiliations).filter(Affiliations.PersonID == People.PersonID) \
+                .filter(People.PersonFirstName.ilike(personfirst)) \
                 .filter(People.PersonLastName.ilike(personlast)).all()
         except:
             return None

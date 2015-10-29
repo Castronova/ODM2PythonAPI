@@ -15,15 +15,16 @@ LIBSPATIALITE_PATH = './libspatialite.so.5.1.0'
 class SessionFactory():
     def __init__(self, connection_string, echo, version = 1.1):
         if 'sqlite' in connection_string:
-            from pysqlite2 import dbapi2 as sqlite
-            self.engine = create_engine(connection_string, module = sqlite, encoding='utf-8', echo=echo)
+            # from pysqlite2 import dbapi2 as sqlite
+            # self.engine = create_engine(connection_string, module = sqlite, encoding='utf-8', echo=echo)
+            self.engine = create_engine(connection_string, encoding='utf-8', echo=echo)
 
-            @event.listens_for(self.engine, "connect")
-            def connect(dbapi_connection, connection_rec):
-                    dbapi_connection.enable_load_extension(True)
-                    dbapi_connection.execute("SELECT load_extension('{0}');".format("mod_spatialite"))
+            # @event.listens_for(self.engine, "connect")
+            # def connect(dbapi_connection, connection_rec):
+            #         dbapi_connection.enable_load_extension(True)
+            #         dbapi_connection.execute("SELECT load_extension('{0}');".format("mod_spatialite"))
 
-            self.engine.execute("SELECT InitSpatialMetaData();")#("SELECT load_extension('mod_spatialite');")#
+            # self.engine.execute("SELECT InitSpatialMetaData();")#("SELECT load_extension('mod_spatialite');")#
             self.test_engine = self.engine
 
         elif 'mssql' in connection_string:
