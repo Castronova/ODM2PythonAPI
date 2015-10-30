@@ -734,8 +734,8 @@ class ReadODM2( serviceBase   ):
 
     def getRelatedModelsByCode(self, modelcode):
         try:
-            return self._session.query(RelatedModels).join(RelatedModels.ModelID == Models.ModelID) \
-                .filter(Models.ModelCode == modelcode)
+            return self._session.query(RelatedModels).join(Models, RelatedModels.ModelID == Models.ModelID) \
+                .filter(Models.ModelCode == modelcode).all()
         except:
             return None
 
