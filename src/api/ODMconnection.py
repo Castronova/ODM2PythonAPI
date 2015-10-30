@@ -50,7 +50,13 @@ class dbconnection():
         if engine == 'sqlite':
             connection_string = engine +':///'+address
             refreshDB(dbtype)
-            return SessionFactory(connection_string, echo=False)
+
+            # build the session
+            session = SessionFactory(connection_string, echo=False)
+
+            # set the schema based on the connection
+            self._setSchema(session.engine)
+            return session
         else:
             connection_string = dbconnection.buildConnDict(dbconnection(), engine, address, db, user, password)
             # if self.testConnection(connection_string):
@@ -59,13 +65,17 @@ class dbconnection():
             if dbtype == 2.0:
                 if self.testEngine(connection_string):
                     # print "success"
-                    return SessionFactory(connection_string, echo=False)
+                    session = SessionFactory(connection_string, echo=False)
+                    self._setSchema(session.engine)
+                    return session
                 else:
                     return None
             else:
                 if self.testEngine1_1(connection_string):
                     # print "success"
-                    return SessionFactory(connection_string, echo=False)
+                    session = SessionFactory(connection_string, echo=False)
+                    self._setSchema(session.engine)
+                    return session
                 else:
                     return None
 

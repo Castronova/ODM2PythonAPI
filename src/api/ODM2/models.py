@@ -1349,7 +1349,7 @@ class MethodExternalIdentifiers(Base):
     ExternalIdentifierSystemID = Column('externalidentifiersystemid',
                                         ForeignKey(ExternalIdentifierSystems.ExternalIdentifierSystemID),
                                         nullable=False)
-    
+
     MethodExternalIdentifier = Column('methodexternalidentifier', String(255), nullable=False)
     MethodExternalIdentifierURI = Column('methodexternalidentifieruri', String(255))
 
