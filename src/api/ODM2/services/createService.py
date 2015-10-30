@@ -53,7 +53,12 @@ class CreateODM2( serviceBase):
         var.SpeciationCV = speciation
 
         self._session.add(var)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except Exception, e:
+            self._session.rollback()
+            print e.message
+            return None
 
         return var
 
@@ -84,7 +89,12 @@ class CreateODM2( serviceBase):
         meth.OrganizationID = orgId
 
         self._session.add(meth)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except Exception, e:
+            self._session.rollback()
+            print e.message
+            return None
 
         return meth
 
@@ -105,7 +115,12 @@ class CreateODM2( serviceBase):
         pl.Explanation = explanation
 
         self._session.add(pl)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except Exception, e:
+            self._session.rollback()
+            print e.message
+            return None
 
         return pl
 
@@ -142,7 +157,12 @@ class CreateODM2( serviceBase):
         sf.FeatureGeometry = featureGeo
 
         self._session.add(sf)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except Exception, e:
+            self._session.rollback()
+            print e.message
+            return None
 
         return sf
 
@@ -164,7 +184,12 @@ class CreateODM2( serviceBase):
         unit.UnitsName = name
 
         self._session.add(unit)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except Exception, e:
+            self._session.rollback()
+            print e.message
+            return None
 
         return unit
 
@@ -195,7 +220,12 @@ class CreateODM2( serviceBase):
         org.ParentOrganizationID = parentOrgId
 
         self._session.add(org)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except Exception, e:
+            self._session.rollback()
+            print e.message
+            return None
 
         return org
 
@@ -217,7 +247,12 @@ class CreateODM2( serviceBase):
         p.PersonLastName = lastName
 
         self._session.add(p)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except Exception, e:
+            self._session.rollback()
+            print e.message
+            return None
 
         return p
 
@@ -268,7 +303,12 @@ class CreateODM2( serviceBase):
         ds.DataSetUUID = uuid.uuid4().hex
 
         self._session.add(ds)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except Exception, e:
+            self._session.rollback()
+            print e.message
+            return None
 
         return ds
 
@@ -280,7 +320,11 @@ class CreateODM2( serviceBase):
         dsr.ResultID = resultid
 
         self._session.add(dsr)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except Exception, e:
+            print e.message
+            return None
 
         return dsr
 
@@ -297,7 +341,12 @@ class CreateODM2( serviceBase):
         action.ActionFileLink = filelink
 
         self._session.add(action)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except Exception, e:
+            self._session.rollback()
+            print e.message
+            return None
 
         return action
 
@@ -309,7 +358,12 @@ class CreateODM2( serviceBase):
         actionby.RoleDescription = roledescription
 
         self._session.add(actionby)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except Exception, e:
+            self._session.rollback()
+            print e.message
+            return None
 
         return actionby
 
@@ -319,8 +373,12 @@ class CreateODM2( serviceBase):
         featureaction.ActionID = actionid
 
         self._session.add(featureaction)
-        self._session.commit()
-
+        try:
+            self._session.commit()
+        except Exception, e:
+            self._session.rollback()
+            print e.message
+            return None
         return featureaction
 
 
@@ -345,7 +403,12 @@ class CreateODM2( serviceBase):
         result.StatusCV = statuscv
 
         self._session.add(result)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except Exception, e:
+            self._session.rollback()
+            print e.message
+            return None
 
         return result
 
@@ -431,7 +494,12 @@ class CreateODM2( serviceBase):
         tsr.ResultTypeCV = result.ResultTypeCV
 
         self._session.add(tsr)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except Exception, e:
+            self._session.rollback()
+            print e.message
+            return None
 
         return tsr
     '''
@@ -465,6 +533,7 @@ class CreateODM2( serviceBase):
             self._session.commit()
             return datavalues
         except Exception, e:
+            self._session.rollback()
             print e.message
             return None
 
@@ -492,7 +561,12 @@ class CreateODM2( serviceBase):
         s.Longitude = longitude
 
         self._session.add(s)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except Exception, e:
+            self._session.rollback()
+            print e.message
+            return None
 
         return s
 
@@ -504,7 +578,12 @@ class CreateODM2( serviceBase):
         spatialreference.SRSDescription = srsDescription
 
         self._session.add(spatialreference)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except Exception, e:
+            self._session.rollback()
+            print e.message
+            return None
 
         return spatialreference
 
@@ -556,7 +635,12 @@ class CreateODM2( serviceBase):
         model.ModelDescription = description
 
         self._session.add(model)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except Exception, e:
+            self._session.rollback()
+            print e.message
+            return None
 
         return model
 
@@ -568,7 +652,12 @@ class CreateODM2( serviceBase):
         related.RelatedModelID = relatedModelID
 
         self._session.add(related)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except Exception, e:
+            self._session.rollback()
+            print e.message
+            return None
 
         return related
 
@@ -591,7 +680,12 @@ class CreateODM2( serviceBase):
         sim.InputDatasetID = inputDatasetID
 
         self._session.add(sim)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except Exception, e:
+            self._session.rollback()
+            print e.message
+            return None
 
         return sim
 
