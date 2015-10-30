@@ -17,7 +17,7 @@ class SessionFactory():
         if 'sqlite' in connection_string:
             self.engine = create_engine(connection_string, encoding='utf-8', echo=echo)
             self.test_engine = self.engine
-        if 'mssql' in connection_string:
+        elif 'mssql' in connection_string:
               self.engine = create_engine(connection_string, encoding='utf-8', echo=echo, pool_recycle=3600, pool_timeout=5, pool_size=20, max_overflow=0)
               self.test_engine = create_engine(connection_string, encoding='utf-8', echo=echo, pool_recycle=3600, pool_timeout=5, max_overflow=0, connect_args={'timeout': 1})
         elif 'postgresql' in connection_string or 'mysql' in connection_string:
@@ -49,23 +49,25 @@ class dbconnection():
     def createConnection(self, engine, address, db=None, user=None, password=None, dbtype = 2.0):
         if engine == 'sqlite':
             connection_string = engine +':///'+address
+            refreshDB(dbtype)
+            return SessionFactory(connection_string, echo=False)
         else:
             connection_string = dbconnection.buildConnDict(dbconnection(), engine, address, db, user, password)
-        # if self.testConnection(connection_string):
-        refreshDB(dbtype)
+            # if self.testConnection(connection_string):
+            refreshDB(dbtype)
 
-        if dbtype == 2.0:
-            if self.testEngine(connection_string):
-                # print "sucess"
-                return SessionFactory(connection_string, echo=False)
+            if dbtype == 2.0:
+                if self.testEngine(connection_string):
+                    # print "success"
+                    return SessionFactory(connection_string, echo=False)
+                else:
+                    return None
             else:
-                return None
-        else:
-            if self.testEngine1_1(connection_string):
-                # print "sucess"
-                return SessionFactory(connection_string, echo=False)
-            else:
-                return None
+                if self.testEngine1_1(connection_string):
+                    # print "success"
+                    return SessionFactory(connection_string, echo=False)
+                else:
+                    return None
 
     @staticmethod
     def _getSchema(engine):
