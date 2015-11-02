@@ -1,16 +1,13 @@
 __author__ = 'tonycastronova'
 
-
 import unittest
+
 from ODM2PythonAPI.src.api.ODMconnection import dbconnection
 from ODM2PythonAPI.src.api.ODM2.services.readService import ReadODM2
 from ODM2PythonAPI.src.api.ODM2.services.createService import CreateODM2
 from ODM2PythonAPI.src.api.ODM2.services.updateService import UpdateODM2
 from ODM2PythonAPI.src.api.ODM2.services.deleteService import DeleteODM2
 
-
-
-from sqlite3 import dbapi2 as sqlite
 
 class test_sqlite(unittest.TestCase):
 
@@ -235,23 +232,22 @@ class test_sqlite(unittest.TestCase):
         self.assertTrue(len(res) == 2)
 
     def test_createRelatedModel(self):
-
         # create model  (expected: record inserted)
         m1 = self.odmcreate.createModel(code='model',
-                                   name='mymodel',
-                                   description='my test model')
+                                        name='mymodel',
+                                        description='my test model')
         # create model  (expected: record inserted)
         m2 = self.odmcreate.createModel(code='model2',
-                                   name='mymodel2',
-                                   description='my test model2')
+                                        name='mymodel2',
+                                        description='my test model2')
         # create a relationship type
-        self.odmcreate.getSession().execute("insert into cv_relationshiptype values ('coupled', 'coupled model', 'models that have been coupled together', 'modeling', NULL)")
+        self.odmcreate.getSession().execute(
+            "insert into cv_relationshiptype values ('coupled', 'coupled model', 'models that have been coupled together', 'modeling', NULL)")
 
         # create related records
         self.odmcreate.createRelatedModel(modelid=m1.ModelID,
                                           relatedModelID=m2.ModelID,
                                           relationshipType='coupled')
-
 
         res = self.odmread.getRelatedModelsByCode('model')
         self.assertTrue(len(res) == 1)
